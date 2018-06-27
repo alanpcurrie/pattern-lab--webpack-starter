@@ -11,6 +11,7 @@ const patternEngines = require("patternlab-node/core/lib/pattern_engines");
 const merge = require("webpack-merge");
 const customization = require(`${plConfig.paths.source.app}/webpack.app.js`);
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const DashboardPlugin = require("webpack-dashboard/plugin");
 
 module.exports = env => {
   const { ifProduction, ifDevelopment } = getIfUtils(env);
@@ -53,9 +54,11 @@ module.exports = env => {
         }
       },
       plugins: removeEmpty([
+        new DashboardPlugin(),
         ifDevelopment(
           new webpack.HotModuleReplacementPlugin(),
-          new webpack.NamedModulesPlugin()
+          new webpack.NamedModulesPlugin(),
+
         ),
         // Remove with PL Core 3.x
         new CopyWebpackPlugin([
